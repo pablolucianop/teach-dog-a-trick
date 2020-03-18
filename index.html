@@ -12,12 +12,17 @@
     <script src="three/js/libs/stats.min.js"></script>
 </head>
 <body>
-    <div id="loadingScreen"><h1>Come here doggie!!</h1><h3 id="loadingScreen">Loading...</h3></div>
-    <div id="container"></div>
-    <div id="info">
-        <h1>Teach this dog a trick! </h1>
-        <a href="https://github.com/pablolucianop" target="_blank" rel="noopener">Link to my repo</a> 
+    <div id="loadingScreen">Come here doggie!!
+        <h2>Loading...</h2>
     </div>
+
+    <div id="container">
+        <div id="info">
+            <h1>Teach this dog a trick! </h1>
+            <a href="https://github.com/pablolucianop" target="_blank" rel="noopener">Link to my repo</a>
+        </div>
+    </div>
+
     
     <script>
         var or, body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft,tail
@@ -96,6 +101,8 @@
             if (RESOURCES_LOADED == false){
                 requestAnimationFrame(animate)
                 renderer.render(loadingScreen.scene, loadingScreen.camera)
+                document.getElementById("loadingScreen").style.display = "block";
+                document.getElementById("container").style.display = "none";
             } else{
               document.getElementById("loadingScreen").style.display = "none";
                document.getElementById("container").style.display = "block";

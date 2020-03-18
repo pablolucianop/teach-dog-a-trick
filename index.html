@@ -19,7 +19,7 @@
     </div>
     
     <script>
-        var or, body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft
+        var or, body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft,tail
         var frame = 0
 
         if (WEBGL.isWebGLAvailable() === false) {
@@ -46,7 +46,7 @@
             loader.load('dog5.dae', function (collada) {
                 dogModel = collada.scene;
                 scene.add(dogModel);
-                animation()
+                // findInSceneAndNAme()
             });
 
             //Lights
@@ -85,7 +85,7 @@
         }
 
 
-        function animation(){
+        function findInSceneAndNAme(){
             body = scene.getObjectByName("body");
             head = scene.getObjectByName("head");
             mouth = scene.getObjectByName("mouth");
@@ -107,13 +107,14 @@
         }
 
 
+        
         function render() {
             frame++
-
+            findInSceneAndNAme()
             function rotatePart(part, axis, speed, startPoint, amplitude){
              part.rotation[axis]= -(Math.sin(frame /100*speed)* amplitude+ startPoint)
             }
-            
+
             rotatePart(mouth,'y',5, 0.3, 0.1 )
             rotatePart(head, 'z', 2, 3, 0.5)
             rotatePart(tail, 'x', 20, 0, 0.5)

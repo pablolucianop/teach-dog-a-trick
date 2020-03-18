@@ -43,7 +43,7 @@
             // Loading collada dog model
             var loadingManager = new THREE.LoadingManager();
             var loader = new THREE.ColladaLoader(loadingManager);
-            loader.load('dog5.dae', function (collada) {
+            loader.load('dog6.dae', function (collada) {
                 dogModel = collada.scene;
                 scene.add(dogModel);
                 loadingManager.onLoad = function () {

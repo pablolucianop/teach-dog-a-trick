@@ -4,79 +4,66 @@
     <title>Teach this dog a trick!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-        body {
-            background: #777;
-            padding: 0;
-            margin: 0;
-            overflow: hidden;
-        }
-        #info {
-            position: absolute;
-            top: 0px;
-            width: 100%;
-            color: #424242;
-            padding: 5px;
-            font-family: Monospace;
-            font-size: 13px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="tdstyle.css">
+    <script src="three/build/three.js"></script>
+    <script src="three/js/loaders/ColladaLoader.js"></script>
+    <script src="three/js/WebGL.js"></script>
+    <script src="three/js/controls/OrbitControls.js"></script>
+    <script src="three/js/libs/stats.min.js"></script>
 </head>
-
 <body>
     <div id="container"></div>
     <div id="info">
         <h1>Teach this dog a trick! </h1>
         <a href="https://github.com/pablolucianop" target="_blank" rel="noopener">Link to my repo</a> 
     </div>
-    <script src="three/build/three.js"></script>
-    <script src="three/js/loaders/ColladaLoader.js"></script>
-    <script src="three/js/WebGL.js"></script>
-    <script src="three/js/controls/OrbitControls.js"></script>
-    <script src="three/js/libs/stats.min.js"></script>
+    
     <script>
+
+        
         if (WEBGL.isWebGLAvailable() === false) {
             document.body.appendChild(WEBGL.getWebGLErrorMessage());
         }
-
-        var container, stats, clock;
-        var camera, scene, renderer, star, positionX, positionY, angle, radious;
-        positionX = 0
-        positionY = 0
-        positionZ = 0
-        angle = 0
-        radious = 0
-
+        var or, body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft
+        var frame = 0
+        
         init();
+    
         animate();
-   
+        
 
+        
         function init() {
             container = document.getElementById('container');
-            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-            camera.position.set(0.4230411162467691, 0.6643687214518752, -3.9961529578031163);
-            camera.lookAt(0, 3, 0);
-            var controls = new THREE.OrbitControls(camera);
-            scene = new THREE.Scene();
-            clock = new THREE.Clock();
 
-            var loadingManager = new THREE.LoadingManager();
+            //setting the camera
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+            camera.position.set(0.4, 0.6, -3);
+            camera.lookAt(0, 0, 0);
+            var controls = new THREE.OrbitControls(camera);
+
+            
+
+            scene = new THREE.Scene();
+
 
             // Loading collada dog model
+            var loadingManager = new THREE.LoadingManager();
             var loader = new THREE.ColladaLoader(loadingManager);
-            loader.load('dog4.dae', function (collada) {
+            loader.load('dog5.dae', function (collada) {
                 dogModel = collada.scene;
                 scene.add(dogModel);
-                dogModel.rotation.y = 4
-                dogModel.position.z = 1
-                dogModel.position.y = -1.1
-                
+                dogModel.rotation.x = 0
+                dogModel.rotation.y = 0
+                dogModel.rotation.z = 0
+                dogModel.position.x = 0
+                dogModel.position.y = 0
+                dogModel.position.z = 0  
+                animation()
             });
 
 
-
-            
+      
             //Lights
             //add ambient light
             var ambientLight = new THREE.AmbientLight(0xcccccc, 0.7);
@@ -87,11 +74,13 @@
             directionalLight.position.set(1, 1, 0).normalize();
             scene.add(directionalLight);
 
-            renderer = new THREE.WebGLRenderer();
+            //set the render
+            renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setClearColor(0xF2EBC2, 1);
             container.appendChild(renderer.domElement);
+
             //stats
             stats = new Stats();
             container.appendChild(stats.dom);
@@ -103,23 +92,52 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
+               
         function animate() {
+
+
             requestAnimationFrame(animate);
-            
             render();
-            scene.ch
             stats.update();
         }
 
+
+        function animation(){
+            body = scene.getObjectByName("body");
+            head = scene.getObjectByName("head");
+            mouth = scene.getObjectByName("mouth");
+            collar = scene.getObjectByName("collar");
+            armRight = scene.getObjectByName("armRight");
+            armLeft = scene.getObjectByName("armLeft");
+            legRight = scene.getObjectByName("legRight");
+            legLeft = scene.getObjectByName("legLeft");   
+            earRight = scene.getObjectByName("legRight");
+            earLeft = scene.getObjectByName("legLeft");   
+            eyeRight = scene.getObjectByName("legRight");
+            eyeLeft = scene.getObjectByName("eyeLeft");  
+            nose = scene.getObjectByName("nose");
+            pawFrontRight = scene.getObjectByName("pawFrontRight");
+            pawFrontLeft = scene.getObjectByName("pawFrontLeft"); 
+            pawBackRight = scene.getObjectByName("pawBackRight");
+            pawBackLeft = scene.getObjectByName("pawBackLeft");  
+            tail= scene.getObjectByName("tail");
+
+             
+        }
+    findAndLinkInScene(mouth)
         function render() {
-            
-            // var dogo = scene.getObjectByName("dozxcg3", true);
+            frame++
+            function rotatePart(part, axis, speed, startPoint, amplitude){
+             part.rotation[axis]= -(Math.sin(frame /100*speed)* amplitude+ startPoint)
+            }
+            rotatePart(mouth,'y',5, 0.3, 0.1 )
+            rotatePart(head, 'z', 2, 3, 0.5)
+            rotatePart(tail, 'x', 20, 0, 0.5)
+             console.log()
             renderer.render(scene, camera);
         }
- 
 
+         
     </script>
 </body>
-
 </html>

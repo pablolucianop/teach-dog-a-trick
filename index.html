@@ -27,7 +27,7 @@
         }
     
         init();
-        animate();
+        // animate();
         
         function init() {
             container = document.getElementById('container');
@@ -46,9 +46,14 @@
             loader.load('dog5.dae', function (collada) {
                 dogModel = collada.scene;
                 scene.add(dogModel);
-                // findInSceneAndNAme()
+                loadingManager.onLoad = function () {
+                    animate();
+                };
             });
 
+
+
+            
             //Lights
             //add ambient light
             var ambientLight = new THREE.AmbientLight(0xcccccc, 0.7);

@@ -28,7 +28,13 @@
     
         init();
         // animate();
+        var loadingScreen ={
+            scene: new THREE.Scene(),
+            camera: new THREE.PerspectiveCamera()
+        }
         
+        var RESOURCES_LOADED= false
+
         function init() {
             container = document.getElementById('container');
 
@@ -48,6 +54,7 @@
                 scene.add(dogModel);
                 loadingManager.onLoad = function () {
                     animate();
+                    RESOURCES_LOADED = true
                 };
             });
 
@@ -84,9 +91,14 @@
         }
                
         function animate() {
+            if (RESOURCES_LOADED == false){
+                requestAnimationFrame(animate)
+                renderer.render(loadingScreen.scene, loadingScreen.camera)
+            } else{
             requestAnimationFrame(animate);
             render();
             stats.update();
+            }
         }
 
 

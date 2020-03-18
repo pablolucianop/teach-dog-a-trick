@@ -12,6 +12,7 @@
     <script src="three/js/libs/stats.min.js"></script>
 </head>
 <body>
+    <div id="loadingScreen"><h1>Come here doggie!!</h1><h3 id="loadingScreen">Loading...</h3></div>
     <div id="container"></div>
     <div id="info">
         <h1>Teach this dog a trick! </h1>
@@ -24,6 +25,7 @@
 
         if (WEBGL.isWebGLAvailable() === false) {
             document.body.appendChild(WEBGL.getWebGLErrorMessage());
+
         }
     
         init();
@@ -95,6 +97,9 @@
                 requestAnimationFrame(animate)
                 renderer.render(loadingScreen.scene, loadingScreen.camera)
             } else{
+              document.getElementById("loadingScreen").style.display = "none";
+               document.getElementById("container").style.display = "block";
+                
             requestAnimationFrame(animate);
             render();
             stats.update();

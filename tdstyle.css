@@ -1,5 +1,5 @@
 body {
-    background: #777;
+    background:#F2EBC2;
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -8,9 +8,22 @@ body {
     position: absolute;
     top: 0px;
     width: 100%;
-    color: #424242;
+    color: #F2EBC2;
     padding: 5px;
     font-family: Monospace;
     font-size: 13px;
     text-align: center;
 }
+
+#container {
+    display: none;
+
+}
+
+h1 { color: #111; font-family: 'Helvetica Neue', sans-serif; font-size: 55px; font-weight: bold; letter-spacing: -1px; line-height: 1; text-align: center; }
+
+
+h2 { color: #111; font-family: 'Open Sans', sans-serif; font-size: 30px; font-weight: 300; line-height: 32px; margin: 0 0 72px; text-align: center; }
+
+
+

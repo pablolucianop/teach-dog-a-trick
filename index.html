@@ -19,33 +19,26 @@
     </div>
     
     <script>
+        var or, body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft
+        var frame = 0
 
-        
         if (WEBGL.isWebGLAvailable() === false) {
             document.body.appendChild(WEBGL.getWebGLErrorMessage());
         }
-        var or, body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft
-        var frame = 0
-        
-        init();
     
+        init();
         animate();
-        
-
         
         function init() {
             container = document.getElementById('container');
 
             //setting the camera
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-            camera.position.set(0.4, 0.6, -3);
+            camera.position.set(-2.46, 1.13, 1.47);
             camera.lookAt(0, 0, 0);
             var controls = new THREE.OrbitControls(camera);
 
-            
-
             scene = new THREE.Scene();
-
 
             // Loading collada dog model
             var loadingManager = new THREE.LoadingManager();
@@ -53,17 +46,9 @@
             loader.load('dog5.dae', function (collada) {
                 dogModel = collada.scene;
                 scene.add(dogModel);
-                dogModel.rotation.x = 0
-                dogModel.rotation.y = 0
-                dogModel.rotation.z = 0
-                dogModel.position.x = 0
-                dogModel.position.y = 0
-                dogModel.position.z = 0  
                 animation()
             });
 
-
-      
             //Lights
             //add ambient light
             var ambientLight = new THREE.AmbientLight(0xcccccc, 0.7);
@@ -94,8 +79,6 @@
         }
                
         function animate() {
-
-
             requestAnimationFrame(animate);
             render();
             stats.update();
@@ -121,19 +104,20 @@
             pawBackRight = scene.getObjectByName("pawBackRight");
             pawBackLeft = scene.getObjectByName("pawBackLeft");  
             tail= scene.getObjectByName("tail");
-
-             
         }
-    findAndLinkInScene(mouth)
+
+
         function render() {
             frame++
+
             function rotatePart(part, axis, speed, startPoint, amplitude){
              part.rotation[axis]= -(Math.sin(frame /100*speed)* amplitude+ startPoint)
             }
+            
             rotatePart(mouth,'y',5, 0.3, 0.1 )
             rotatePart(head, 'z', 2, 3, 0.5)
             rotatePart(tail, 'x', 20, 0, 0.5)
-             console.log()
+            // console.log(camera.position)
             renderer.render(scene, camera);
         }
 

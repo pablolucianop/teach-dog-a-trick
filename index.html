@@ -1,156 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Teach this dog a trick!</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="tdstyle.css">
-    <script src="three/build/three.js"></script>
-    <script src="three/js/loaders/ColladaLoader.js"></script>
-    <script src="three/js/WebGL.js"></script>
-    <script src="three/js/controls/OrbitControls.js"></script>
-    <script src="three/js/libs/stats.min.js"></script>
-</head>
-<body>
-    <div id="loadingScreen">Come here doggie!!
-        <h2>Loading...</h2>
-    </div>
+    <head>
+        <title>Teach this dog a trick!</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="tdstyle.css" />
+        <script src="three/build/three.js"></script>
+        <script src="three/js/loaders/ColladaLoader.js"></script>
+        <script src="three/js/WebGL.js"></script>
+        <script src="three/js/controls/OrbitControls.js"></script>
+        <script src="three/js/libs/stats.min.js"></script>
+    </head>
+    <body>
+        <div id="loadingScreen">
+            Come here doggie!!
+            <h2>Loading...</h2>
+        </div>
 
-    <div id="container">
+        <div id="container">
+            <h1>Teach this dog a trick!</h1>
+            <a href="https://github.com/pablolucianop/teach-dog-a-trick" target="_blank" rel="noopener">
+                <h2>github link</h2>
+            </a>
+        </div>
 
-            <h1>Teach this dog a trick! </h1>
-            <a href="https://github.com/pablolucianop/teach-dog-a-trick" target="_blank" rel="noopener"><h2>github link</h2></a>
-    </div>
+        <script>
+            var body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft, tail;
+            var frame = 0;
 
-    
-    <script>
-        var or, body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft,tail
-        var frame = 0
-
-        if (WEBGL.isWebGLAvailable() === false) {
-            document.body.appendChild(WEBGL.getWebGLErrorMessage());
-
-        }
-    
-        init();
-        // animate();
-        var loadingScreen ={
-            scene: new THREE.Scene(),
-            camera: new THREE.PerspectiveCamera()
-        }
-        
-        var RESOURCES_LOADED= false
-
-        function init() {
-            container = document.getElementById('container');
-
-            //setting the camera
-            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-            camera.position.set(-2.46, 1.13, 1.47);
-            camera.lookAt(0, 0, 0);
-            var controls = new THREE.OrbitControls(camera);
-
-            scene = new THREE.Scene();
-
-            // Loading collada dog model
-            var loadingManager = new THREE.LoadingManager();
-            var loader = new THREE.ColladaLoader(loadingManager);
-            loader.load('dog6.dae', function (collada) {
-                dogModel = collada.scene;
-                scene.add(dogModel);
-                loadingManager.onLoad = function () {
-                    animate();
-                    RESOURCES_LOADED = true
-                };
-            });
-
-
-
-            
-            //Lights
-            //add ambient light
-            var ambientLight = new THREE.AmbientLight(0xcccccc, 0.7);
-            scene.add(ambientLight);
-
-            //add directional light
-            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            directionalLight.position.set(1, 1, 0).normalize();
-            scene.add(directionalLight);
-
-            //set the render
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setClearColor(0xF2EBC2, 1);
-            container.appendChild(renderer.domElement);
-
-            //stats
-            stats = new Stats();
-            container.appendChild(stats.dom);
-            window.addEventListener('resize', onWindowResize, false);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-               
-        function animate() {
-            if (RESOURCES_LOADED == false){
-                requestAnimationFrame(animate)
-                renderer.render(loadingScreen.scene, loadingScreen.camera)
-                document.getElementById("loadingScreen").style.display = "block";
-                document.getElementById("container").style.display = "none";
-            } else{
-              document.getElementById("loadingScreen").style.display = "none";
-               document.getElementById("container").style.display = "block";
-                
-            requestAnimationFrame(animate);
-            render();
-            stats.update();
-            }
-        }
-
-
-        function findInSceneAndNAme(){
-            body = scene.getObjectByName("body");
-            head = scene.getObjectByName("head");
-            mouth = scene.getObjectByName("mouth");
-            collar = scene.getObjectByName("collar");
-            armRight = scene.getObjectByName("armRight");
-            armLeft = scene.getObjectByName("armLeft");
-            legRight = scene.getObjectByName("legRight");
-            legLeft = scene.getObjectByName("legLeft");   
-            earRight = scene.getObjectByName("legRight");
-            earLeft = scene.getObjectByName("legLeft");   
-            eyeRight = scene.getObjectByName("legRight");
-            eyeLeft = scene.getObjectByName("eyeLeft");  
-            nose = scene.getObjectByName("nose");
-            pawFrontRight = scene.getObjectByName("pawFrontRight");
-            pawFrontLeft = scene.getObjectByName("pawFrontLeft"); 
-            pawBackRight = scene.getObjectByName("pawBackRight");
-            pawBackLeft = scene.getObjectByName("pawBackLeft");  
-            tail= scene.getObjectByName("tail");
-        }
-
-
-        
-        function render() {
-            frame++
-            findInSceneAndNAme()
-            function rotatePart(part, axis, speed, startPoint, amplitude){
-             part.rotation[axis]= -(Math.sin(frame /100*speed)* amplitude+ startPoint)
+            if (WEBGL.isWebGLAvailable() === false) {
+                document.body.appendChild(WEBGL.getWebGLErrorMessage());
             }
 
-            rotatePart(mouth,'y',5, 0.3, 0.1 )
-            rotatePart(head, 'z', 2, 3, 0.5)
-            rotatePart(tail, 'x', 20, 0, 0.5)
-            // console.log(camera.position)
-            renderer.render(scene, camera);
-        }
+            init();
+            // animate();
+            var loadingScreen = {
+                scene: new THREE.Scene(),
+                camera: new THREE.PerspectiveCamera()
+            };
 
-         
-    </script>
-</body>
+            var RESOURCES_LOADED = false;
+
+            function init() {
+                container = document.getElementById("container");
+
+                //setting the camera
+                camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+                camera.position.set(-2.46, 1.13, 1.47);
+                camera.lookAt(0, 0, 0);
+                var controls = new THREE.OrbitControls(camera);
+
+                scene = new THREE.Scene();
+
+                // Loading collada dog model
+                var loadingManager = new THREE.LoadingManager();
+                var loader = new THREE.ColladaLoader(loadingManager);
+                loader.load("dog6.dae", function(collada) {
+                    dogModel = collada.scene;
+                    scene.add(dogModel);
+                    loadingManager.onLoad = function() {
+                        animate();
+                        RESOURCES_LOADED = true;
+                    };
+                });
+
+                //Lights
+                //add ambient light
+                var ambientLight = new THREE.AmbientLight(0xcccccc, 0.7);
+                scene.add(ambientLight);
+
+                //add directional light
+                var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(1, 1, 0).normalize();
+                scene.add(directionalLight);
+
+                //set the render
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setClearColor(0xf2ebc2, 1);
+                container.appendChild(renderer.domElement);
+
+                //stats
+                stats = new Stats();
+                container.appendChild(stats.dom);
+                window.addEventListener("resize", onWindowResize, false);
+            }
+
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            function animate() {
+                if (RESOURCES_LOADED == false) {
+                    requestAnimationFrame(animate);
+                    renderer.render(loadingScreen.scene, loadingScreen.camera);
+                    document.getElementById("loadingScreen").style.display = "block";
+                    document.getElementById("container").style.display = "none";
+                } else {
+                    document.getElementById("loadingScreen").style.display = "none";
+                    document.getElementById("container").style.display = "block";
+
+                    requestAnimationFrame(animate);
+                    render();
+                    stats.update();
+                }
+            }
+
+            function findInSceneAndNAme() {
+                body = scene.getObjectByName("body");
+                head = scene.getObjectByName("head");
+                mouth = scene.getObjectByName("mouth");
+                collar = scene.getObjectByName("collar");
+                armRight = scene.getObjectByName("armRight");
+                armLeft = scene.getObjectByName("armLeft");
+                legRight = scene.getObjectByName("legRight");
+                legLeft = scene.getObjectByName("legLeft");
+                earRight = scene.getObjectByName("legRight");
+                earLeft = scene.getObjectByName("legLeft");
+                eyeRight = scene.getObjectByName("legRight");
+                eyeLeft = scene.getObjectByName("eyeLeft");
+                nose = scene.getObjectByName("nose");
+                pawFrontRight = scene.getObjectByName("pawFrontRight");
+                pawFrontLeft = scene.getObjectByName("pawFrontLeft");
+                pawBackRight = scene.getObjectByName("pawBackRight");
+                pawBackLeft = scene.getObjectByName("pawBackLeft");
+                tail = scene.getObjectByName("tail");
+            }
+
+            function render() {
+                frame++;
+                findInSceneAndNAme();
+                function rotatePart(part, axis, speed, startPoint, amplitude) {
+                    part.rotation[axis] = -(Math.sin((frame / 100) * speed) * amplitude + startPoint);
+                }
+
+                rotatePart(mouth, "y", 5, 0.3, 0.1);
+                rotatePart(head, "z", 2, 3, 0.5);
+                rotatePart(tail, "x", 20, 0, 0.5);
+                // console.log(camera.position)
+                renderer.render(scene, camera);
+            }
+        </script>
+    </body>
 </html>

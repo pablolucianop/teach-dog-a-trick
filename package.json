@@ -1,0 +1,10 @@
+{
+  "name": "teach-dog-a-trick",
+  "private": true,
+  "scripts": {
+    "prettier": "prettier --write index.html tdstyle.css"
+  },
+  "dependencies": {
+    "prettier": "^1.19.1"
+  }
+}

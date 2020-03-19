@@ -25,39 +25,63 @@
         </div>
 
         <script>
-            var body, head, mouth, collar, armRight, armLeft, legRight, legLeft, eyeRight, eyeLeft, nose, earLeft, tail;
-            var frame = 0;
+            /* global THREE, WEBGL, Stats */
+            let body, head, mouth, collar, eyeRight, eyeLeft, nose, earRight, earLeft, tail;
+            let armRight, armLeft, legRight, legLeft, pawFrontRight, pawFrontLeft, pawBackRight, pawBackLeft;
+            let frame = 0;
+
+            const loadingScreen = {
+                scene: new THREE.Scene(),
+                camera: new THREE.PerspectiveCamera()
+            };
+
+            let RESOURCES_LOADED = false;
+            let dogPivot,
+                dogState = "idle",
+                ball,
+                ballMoving,
+                ballVelocity;
+            let camera, scene, renderer, stats;
+
+            const clock = new THREE.Clock();
+            let lerp = 0;
+            const tempQuaternion = new THREE.Quaternion();
+            const tempVector = new THREE.Vector3();
+            const zAxis = new THREE.Vector3(0, 0, 1);
 
             if (WEBGL.isWebGLAvailable() === false) {
                 document.body.appendChild(WEBGL.getWebGLErrorMessage());
             }
 
             init();
-            // animate();
-            var loadingScreen = {
-                scene: new THREE.Scene(),
-                camera: new THREE.PerspectiveCamera()
-            };
-
-            var RESOURCES_LOADED = false;
 
             function init() {
-                container = document.getElementById("container");
+                const container = document.getElementById("container");
 
                 //setting the camera
                 camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
                 camera.position.set(-2.46, 1.13, 1.47);
                 camera.lookAt(0, 0, 0);
-                var controls = new THREE.OrbitControls(camera);
+                new THREE.OrbitControls(camera);
 
                 scene = new THREE.Scene();
+                scene.fog = new THREE.FogExp2(0xf2ebc2, 0.02);
 
                 // Loading collada dog model
-                var loadingManager = new THREE.LoadingManager();
-                var loader = new THREE.ColladaLoader(loadingManager);
+                const loadingManager = new THREE.LoadingManager();
+                const loader = new THREE.ColladaLoader(loadingManager);
+                dogPivot = new THREE.Group();
                 loader.load("dog6.dae", function(collada) {
-                    dogModel = collada.scene;
-                    scene.add(dogModel);
+                    const dogModel = collada.scene;
+                    dogModel.traverse(obj => {
+                        if (obj.isMesh) {
+                            obj.castShadow = true;
+                            obj.receiveShadow = true;
+                        }
+                    });
+                    dogModel.rotation.y = Math.PI / 2;
+                    dogPivot.add(dogModel);
+                    scene.add(dogPivot);
                     loadingManager.onLoad = function() {
                         animate();
                         RESOURCES_LOADED = true;
@@ -66,25 +90,66 @@
 
                 //Lights
                 //add ambient light
-                var ambientLight = new THREE.AmbientLight(0xcccccc, 0.7);
+                const ambientLight = new THREE.AmbientLight(0xcccccc, 0.7);
                 scene.add(ambientLight);
 
                 //add directional light
-                var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-                directionalLight.position.set(1, 1, 0).normalize();
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(20, 20, 20);
+                directionalLight.castShadow = true;
+                directionalLight.shadow.mapSize.set(2048, 2048);
+                directionalLight.shadow.camera.left = -40;
+                directionalLight.shadow.camera.bottom = -20;
+                directionalLight.shadow.camera.top = 20;
+                directionalLight.shadow.camera.right = 40;
                 scene.add(directionalLight);
+
+                const floor = new THREE.Mesh(
+                    new THREE.CircleBufferGeometry(100, 32),
+                    new THREE.MeshStandardMaterial({ color: 0xf2ebc2, roughness: 1, metalness: 0 })
+                );
+                floor.receiveShadow = true;
+                floor.rotation.x = -Math.PI / 2;
+                scene.add(floor);
 
                 //set the render
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.setClearColor(0xf2ebc2, 1);
+                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
                 container.appendChild(renderer.domElement);
 
                 //stats
                 stats = new Stats();
                 container.appendChild(stats.dom);
                 window.addEventListener("resize", onWindowResize, false);
+
+                ball = new THREE.Mesh(
+                    new THREE.SphereBufferGeometry(0.05),
+                    new THREE.MeshStandardMaterial({ color: "darkred", roughness: 0.4, metalness: 0 })
+                );
+                ball.castShadow = true;
+                scene.add(ball);
+
+                ballMoving = false;
+                ballVelocity = new THREE.Vector3();
+                function throwBall(e) {
+                    if (dogState !== "idle") return;
+                    scene.add(ball);
+                    ball.scale.setScalar(1);
+                    ball.position.set((e.clientX / innerWidth) * 2 - 1, -1 * ((e.clientY / innerHeight) * 2 - 1), 0);
+                    ball.position.unproject(camera);
+                    ballVelocity.set(
+                        ((e.clientX / innerWidth) * 2 - 1) * 8,
+                        (-e.clientY / innerHeight + 1) * 8 + 2,
+                        -10
+                    );
+                    ballVelocity.applyQuaternion(camera.quaternion);
+                    ballMoving = true;
+                }
+                window.addEventListener("click", throwBall);
             }
 
             function onWindowResize() {
@@ -109,12 +174,12 @@
                 }
             }
 
-            function findInSceneAndNAme() {
+            function findInSceneAndName() {
                 body = scene.getObjectByName("body");
                 head = scene.getObjectByName("head");
                 mouth = scene.getObjectByName("mouth");
                 collar = scene.getObjectByName("collar");
-                armRight = scene.getObjectByName("armRight");
+                armRight = scene.getObjectByName("ArmRight");
                 armLeft = scene.getObjectByName("armLeft");
                 legRight = scene.getObjectByName("legRight");
                 legLeft = scene.getObjectByName("legLeft");
@@ -132,15 +197,91 @@
 
             function render() {
                 frame++;
-                findInSceneAndNAme();
+
+                findInSceneAndName();
+
+                const delta = clock.getDelta();
+
+                if (ballMoving) {
+                    ball.position.x += ballVelocity.x * delta;
+                    ball.position.y += ballVelocity.y * delta;
+                    ball.position.z += ballVelocity.z * delta;
+                    ballVelocity.y += -9.8 * delta;
+                    if (ball.position.y <= 0.04) {
+                        ballMoving = false;
+                        ball.position.y = 0.04;
+                        lerp = 0;
+                        dogState = "fetching";
+                    }
+                    head.lookAt(ball.position);
+                }
+
+                if (dogState === "fetching") {
+                    head.lookAt(ball.position);
+
+                    lerp += 0.5 * delta;
+                    if (lerp >= 1) lerp = 1;
+
+                    dogPivot.quaternion.slerp(
+                        tempQuaternion.setFromUnitVectors(zAxis, tempVector.copy(ball.position).sub(dogPivot.position)),
+                        lerp
+                    );
+                    dogPivot.translateZ(6 * delta);
+
+                    if (dogPivot.position.distanceTo(ball.position) < 0.8) {
+                        mouth.add(ball);
+                        ball.scale.setScalar(150);
+                        ball.position.set(-10, 0, 30);
+                        head.rotation.set(Math.PI, -Math.PI / 8, 0);
+                        lerp = 0;
+                        dogState = "returning";
+                    }
+                }
+
+                if (dogState === "returning") {
+                    lerp += 0.5 * delta;
+                    if (lerp >= 1) lerp = 1;
+
+                    dogPivot.quaternion.slerp(
+                        tempQuaternion.setFromUnitVectors(zAxis, tempVector.set(0, 0, 0).sub(dogPivot.position)),
+                        lerp
+                    );
+                    dogPivot.translateZ(6 * delta);
+
+                    if (dogPivot.position.distanceTo(scene.position) < 0.8) {
+                        dogState = "idle";
+                    }
+                }
+
                 function rotatePart(part, axis, speed, startPoint, amplitude) {
                     part.rotation[axis] = -(Math.sin((frame / 100) * speed) * amplitude + startPoint);
+                }
+
+                if (dogState === "idle") {
+                    armLeft.rotation.y = 1.5;
+                    armRight.rotation.y = 1.5;
+                    legLeft.rotation.y = 1.5;
+                    legRight.rotation.y = 1.5;
+                    pawFrontRight.rotation.y = 0;
+                    pawFrontLeft.rotation.y = 0;
+                    pawBackRight.rotation.y = 0;
+                    pawBackRight.rotation.y = 0;
+                } else {
+                    const speed = 40;
+                    rotatePart(armLeft, "y", speed, -1.5, -0.5);
+                    rotatePart(armRight, "y", speed, -1.5, 0.5);
+                    rotatePart(legLeft, "y", speed, -1.5, 0.5);
+                    rotatePart(legRight, "y", speed, -1.5, -0.5);
+                    rotatePart(pawFrontRight, "y", speed, 0, 0.2);
+                    rotatePart(pawFrontLeft, "y", speed, 0, -0.2);
+                    rotatePart(pawBackRight, "y", speed, 0, -0.3);
+                    rotatePart(pawBackLeft, "y", speed, 0, 0.3);
                 }
 
                 rotatePart(mouth, "y", 5, 0.3, 0.1);
                 rotatePart(head, "z", 2, 3, 0.5);
                 rotatePart(tail, "x", 20, 0, 0.5);
-                // console.log(camera.position)
+
                 renderer.render(scene, camera);
             }
         </script>

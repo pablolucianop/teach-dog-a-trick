@@ -10,6 +10,7 @@
         <script src="three/js/WebGL.js"></script>
         <script src="three/js/controls/OrbitControls.js"></script>
         <script src="three/js/libs/stats.min.js"></script>
+        <script src="three/js/vendor/tweenjs/tweenjs.js"></script>
     </head>
     <body>
         <div id="loadingScreen">
@@ -150,6 +151,36 @@
                     ballMoving = true;
                 }
                 window.addEventListener("click", throwBall);
+
+                function payRespects(){
+                    if (dogState !== "idle") return;
+                    dogState = "playingDead";
+
+                    var dogBoundingBox = new THREE.Box3();
+                    var dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
+                    var halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
+                    
+                    var fromPosition = {angle:dogPivot.rotation.z, posY:0};
+                    var toPosition = {angle:dogPivot.rotation.z - Math.PI * 0.48, posY:halfDogWidth - .09}; // .09 to account for a bit of head movement
+
+                    var fallTween = new TWEEN.Tween(fromPosition).to(toPosition, 2000)
+                    .easing(TWEEN.Easing.Bounce.Out)
+                    .onUpdate(function(){
+                        dogPivot.rotation.z = fromPosition.angle;
+                        dogPivot.position.y = fromPosition.posY;
+                    }).onComplete(function() {
+                        setTimeout(function(){
+                            dogState = "idle";
+                            dogPivot.rotation.z = 0;
+                            dogPivot.position.y = 0;
+                        }, 1000)
+                    }).start()
+                }
+                window.addEventListener('keypress', function (e) {
+                    if (e.key === 'f') {
+                        payRespects();
+                    }
+                });
             }
 
             function onWindowResize() {
@@ -158,7 +189,7 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             }
 
-            function animate() {
+            function animate(time) {
                 if (RESOURCES_LOADED == false) {
                     requestAnimationFrame(animate);
                     renderer.render(loadingScreen.scene, loadingScreen.camera);
@@ -169,6 +200,7 @@
                     document.getElementById("container").style.display = "block";
 
                     requestAnimationFrame(animate);
+                    TWEEN.update(time);
                     render();
                     stats.update();
                 }
@@ -266,7 +298,7 @@
                     pawFrontLeft.rotation.y = 0;
                     pawBackRight.rotation.y = 0;
                     pawBackRight.rotation.y = 0;
-                } else {
+                } else if (dogState !== "playingDead") {
                     const speed = 40;
                     rotatePart(armLeft, "y", speed, -1.5, -0.5);
                     rotatePart(armRight, "y", speed, -1.5, 0.5);
@@ -278,9 +310,11 @@
                     rotatePart(pawBackLeft, "y", speed, 0, 0.3);
                 }
 
-                rotatePart(mouth, "y", 5, 0.3, 0.1);
-                rotatePart(head, "z", 2, 3, 0.5);
-                rotatePart(tail, "x", 20, 0, 0.5);
+                if (dogState !== "playingDead") {
+                    rotatePart(mouth, "y", 5, 0.3, 0.1);
+                    rotatePart(head, "z", 2, 3, 0.5);
+                    rotatePart(tail, "x", 20, 0, 0.5);
+                }
 
                 renderer.render(scene, camera);
             }

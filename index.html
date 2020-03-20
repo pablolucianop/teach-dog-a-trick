@@ -10,7 +10,7 @@
         <script src="three/js/WebGL.js"></script>
         <script src="three/js/controls/OrbitControls.js"></script>
         <script src="three/js/libs/stats.min.js"></script>
-        <script src="three/js/vendor/tweenjs/tweenjs.min.js"></script>
+        <script src="three/js/vendor/tweenjs/tweenjs.js"></script>
     </head>
     <body>
         <div id="loadingScreen">
@@ -163,7 +163,7 @@
                     var fromPosition = {angle:dogPivot.rotation.z, posY:0};
                     var toPosition = {angle:dogPivot.rotation.z - Math.PI * 0.48, posY:halfDogWidth - .09}; // .09 to account for a bit of head movement
 
-                    var fallTween = new TWEEN.Tween(fromPosition).to(toPosition, 3200)
+                    var fallTween = new TWEEN.Tween(fromPosition).to(toPosition, 2000)
                     .easing(TWEEN.Easing.Bounce.Out)
                     .onUpdate(function(){
                         dogPivot.rotation.z = fromPosition.angle;
@@ -173,7 +173,7 @@
                             dogState = "idle";
                             dogPivot.rotation.z = 0;
                             dogPivot.position.y = 0;
-                        }, 500)
+                        }, 1000)
                     }).start()
                 }
                 window.addEventListener('keypress', function (e) {

@@ -156,7 +156,6 @@
                     if (dogState !== "idle") return;
                     dogState = "playingDead";
 
-                    var dogBoundingBox = new THREE.Box3();
                     var dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
                     var halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
                     
@@ -170,12 +169,43 @@
                         dogPivot.position.y = fromPosition.posY;
                     }).onComplete(function() {
                         setTimeout(function(){
-                            dogState = "idle";
-                            dogPivot.rotation.z = 0;
-                            dogPivot.position.y = 0;
+                            // dogPivot.rotation.z = 0;
+                            // dogPivot.position.y = 0;
+                            getUp()
                         }, 1000)
+                        setTimeout(function () {
+                            // dogState = "idle";
+                        }, 2000)
                     }).start()
                 }
+
+                function getUp() {
+                    // if (dogState !== "idle") return;
+                    
+
+                    var dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
+                    var halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
+
+                    var fromPosition = { angle: dogPivot.rotation.z, posY: dogPivot.position.y };
+                    var toPosition = { angle: dogPivot.rotation.z - Math.PI * 1.5, posY: 0 }; // .09 to account for a bit of head movement
+
+
+                    var fallTween = new TWEEN.Tween(fromPosition).to(toPosition, 2000)
+                        .easing(TWEEN.Easing.Bounce.Out)
+                        .onUpdate(function () {
+                            dogPivot.rotation.z = fromPosition.angle;
+                            dogPivot.position.y = fromPosition.posY;
+                        }).onComplete(function () {
+                            setTimeout(function () {
+                                dogPivot.rotation.z = 0;
+                                dogPivot.position.y = 0;
+                            }, 1000)
+                            setTimeout(function () {
+                            dogState = "idle";
+                            }, 2000)
+                        }).start()
+                }
+                
                 window.addEventListener('keypress', function (e) {
                     if (e.key === 'f') {
                         payRespects();

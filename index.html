@@ -24,7 +24,7 @@
                 <h2>github link</h2>
 
             </a>
-            <h3>click anywhere and drag to play fetch</h3>
+            <h3>click and drag to play fetch</h3>
             <h3>Press F to play dead (and pay respects)</h3>
         </div>
 
@@ -194,7 +194,7 @@
 
 
                     var fallTween = new TWEEN.Tween(fromPosition).to(toPosition, 2000)
-                        .easing(TWEEN.Easing.Bounce.Out)
+                        .easing(TWEEN.Easing.Quadratic.In)
                         .onUpdate(function () {
                             dogPivot.rotation.z = fromPosition.angle;
                             dogPivot.position.y = fromPosition.posY;

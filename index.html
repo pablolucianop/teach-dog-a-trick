@@ -34,6 +34,8 @@
             let armRight, armLeft, legRight, legLeft, pawFrontRight, pawFrontLeft, pawBackRight, pawBackLeft;
             let frame = 0;
             let dimmer =1
+            let xa
+            let enableShadows = false
             const loadingScreen = {
                 scene: new THREE.Scene(),
                 camera: new THREE.PerspectiveCamera()
@@ -59,6 +61,8 @@
 
             init();
 
+
+
             function init() {
                 const container = document.getElementById("container");
 
@@ -79,8 +83,8 @@
                     const dogModel = collada.scene;
                     dogModel.traverse(obj => {
                         if (obj.isMesh) {
-                            obj.castShadow = true;
-                            obj.receiveShadow = true;
+                            obj.castShadow = enableShadows;
+                            obj.receiveShadow = enableShadows;
                         }
                     });
                     dogModel.rotation.y = Math.PI / 2;
@@ -100,7 +104,7 @@
                 //add directional light
                 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
                 directionalLight.position.set(20, 20, 20);
-                directionalLight.castShadow = true;
+                directionalLight.castShadow = enableShadows;
                 directionalLight.shadow.mapSize.set(2048, 2048);
                 directionalLight.shadow.camera.left = -40;
                 directionalLight.shadow.camera.bottom = -20;
@@ -112,7 +116,7 @@
                     new THREE.CircleBufferGeometry(100, 32),
                     new THREE.MeshStandardMaterial({ color: 0xf2ebc2, roughness: 1, metalness: 0 })
                 );
-                floor.receiveShadow = true;
+                floor.receiveShadow = enableShadows;
                 floor.rotation.x = -Math.PI / 2;
                 scene.add(floor);
 
@@ -121,7 +125,7 @@
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 renderer.setClearColor(0xf2ebc2, 1);
-                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.enabled = enableShadows;
                 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
                 container.appendChild(renderer.domElement);
 
@@ -134,7 +138,7 @@
                     new THREE.SphereBufferGeometry(0.05),
                     new THREE.MeshStandardMaterial({ color: "darkred", roughness: 0.4, metalness: 0 })
                 );
-                ball.castShadow = true;
+                ball.castShadow = enableShadows;
                 scene.add(ball);
 
                 ballMoving = false;
@@ -154,6 +158,7 @@
                     ballMoving = true;
                 }
                 window.addEventListener("click", throwBall);
+                window.addEventListener("tap", throwBall);
 
                 function payRespects(){
                     if (dogState !== "idle") return;
@@ -181,6 +186,7 @@
                         }, 2000)
                     }).start()
                 }
+
 
                 function getUp() {
                     // if (dogState !== "idle") return;
@@ -250,7 +256,7 @@
                 legLeft = scene.getObjectByName("legLeft");
                 earRight = scene.getObjectByName("legRight");
                 earLeft = scene.getObjectByName("legLeft");
-                eyeRight = scene.getObjectByName("legRight");
+                eyeRight = scene.getObjectByName("eyeRight");
                 eyeLeft = scene.getObjectByName("eyeLeft");
                 nose = scene.getObjectByName("nose");
                 pawFrontRight = scene.getObjectByName("pawFrontRight");

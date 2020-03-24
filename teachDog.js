@@ -26,6 +26,7 @@
         let enableShadow = false
         let frame = 0;
         let dimmer = 1
+        let delta
 
         //web gl test
         if (WEBGL.isWebGLAvailable() === false) {
@@ -132,8 +133,6 @@
             container.appendChild(stats.dom);
             window.addEventListener("resize", onWindowResize, false);
 
-
-
             function throwBall(e) {
                 if (dogState !== "idle") return;
                 scene.add(ball);
@@ -212,30 +211,12 @@
             });
         }
 
+        // windows size adapt
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
-        function animate(time) {
-            //loading screen managing
-            if (RESOURCES_LOADED == false) {
-                requestAnimationFrame(animate);
-                renderer.render(loadingScreen.scene, loadingScreen.camera);
-                document.getElementById("loadingScreen").style.display = "block";
-                document.getElementById("container").style.display = "none";
-            } else {
-                document.getElementById("loadingScreen").style.display = "none";
-                document.getElementById("container").style.display = "block";
-
-                requestAnimationFrame(animate);
-                TWEEN.update(time);
-                render();
-                stats.update();
-            }
-        }
-
 
         function findInSceneAndName() {
             body = scene.getObjectByName("body");
@@ -258,12 +239,25 @@
             tail = scene.getObjectByName("tail");
         }
 
-        function render() {
-            frame++;
+        function animate(time) {
+            //loading screen managing
+            if (RESOURCES_LOADED == false) {
+                requestAnimationFrame(animate);
+                renderer.render(loadingScreen.scene, loadingScreen.camera);
+                document.getElementById("loadingScreen").style.display = "block";
+                document.getElementById("container").style.display = "none";
+            } else {
+                document.getElementById("loadingScreen").style.display = "none";
+                document.getElementById("container").style.display = "block";
 
-            findInSceneAndName();
+                requestAnimationFrame(animate);
+                TWEEN.update(time);
+                render();
+                stats.update();
+            }
+        }
 
-            const delta = clock.getDelta();
+        function mainDogControl(){
 
             
             if (ballMoving) {
@@ -280,6 +274,7 @@
                 head.lookAt(ball.position);
             }
 
+            //if dog state is 'fetching' move head to look at the ball
             if (dogState === "fetching") {
                 head.lookAt(ball.position);
 
@@ -292,6 +287,7 @@
                 );
                 dogPivot.translateZ(6 * delta);
 
+                //if dog is close to ball, put it in the mouth, and set 'returning' dog state
                 if (dogPivot.position.distanceTo(ball.position) < 0.8) {
                     mouth.add(ball);
                     ball.scale.setScalar(150);
@@ -302,6 +298,7 @@
                 }
             }
 
+
             if (dogState === "returning") {
                 lerp += 0.5 * delta;
                 if (lerp >= 1) lerp = 1;
@@ -311,7 +308,7 @@
                     lerp
                 );
                 dogPivot.translateZ(6 * delta);
-
+                //if it arrives to his original position, stay idle 
                 if (dogPivot.position.distanceTo(scene.position) < 0.8) {
                     dogState = "idle";
                 }
@@ -320,17 +317,7 @@
             function rotatePart(part, axis, speed, startPoint, amplitude) {
                 part.rotation[axis] = -(Math.sin((frame / 100) * speed) * amplitude + startPoint);
             }
-
-            if (dogState === "idle") {
-                armLeft.rotation.y = 1.5;
-                armRight.rotation.y = 1.5;
-                legLeft.rotation.y = 1.5;
-                legRight.rotation.y = 1.5;
-                pawFrontRight.rotation.y = 0;
-                pawFrontLeft.rotation.y = 0;
-                pawBackRight.rotation.y = 0;
-                pawBackRight.rotation.y = 0;
-            } else if (dogState !== "playingDead") {
+            function walkMovement() {
                 const speed = 40;
                 rotatePart(armLeft, "y", speed, -1.5, -0.5);
                 rotatePart(armRight, "y", speed, -1.5, 0.5);
@@ -341,11 +328,31 @@
                 rotatePart(pawBackRight, "y", speed, 0, -0.3);
                 rotatePart(pawBackLeft, "y", speed, 0, 0.3);
             }
+            function headAndTailNaturalMovement(dimmer){
+                rotatePart(mouth, "y", 5, 0.3, 0.1 * dimmer);
+                rotatePart(head, "z", 2, 3, 0.5 * dimmer);
+                rotatePart(tail, "x", 20, 0, 0.5 * dimmer);
 
-            rotatePart(mouth, "y", 5, 0.3, 0.1 * dimmer);
-            rotatePart(head, "z", 2, 3, 0.5 * dimmer);
-            rotatePart(tail, "x", 20, 0, 0.5 * dimmer);
 
+            }
+            function idleStand(){
+                armLeft.rotation.y = 1.5;
+                armRight.rotation.y = 1.5;
+                legLeft.rotation.y = 1.5;
+                legRight.rotation.y = 1.5;
+                pawFrontRight.rotation.y = 0;
+                pawFrontLeft.rotation.y = 0;
+                pawBackRight.rotation.y = 0;
+                pawBackRight.rotation.y = 0;
+            }
+
+            if (dogState === "idle") {
+                idleStand()
+            } else if (dogState !== "playingDead") {
+                walkMovement()
+            }
+                
+            headAndTailNaturalMovement(dimmer)
             if (dogState !== "playingDead") {
                 if (dimmer < 1) {
                     dimmer = dimmer + 0.05
@@ -355,6 +362,14 @@
                     dimmer = dimmer - 0.05
                 }
             }
+        }
+
+        function render() {
+            frame++;
+            findInSceneAndName();
+            delta = clock.getDelta();
+            
+            mainDogControl()
 
             renderer.render(scene, camera);
         }

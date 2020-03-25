@@ -133,20 +133,7 @@
             container.appendChild(stats.dom);
             window.addEventListener("resize", onWindowResize, false);
 
-            function throwBall(e) {
-                if (dogState !== "idle") return;
-                scene.add(ball);
-                ball.scale.setScalar(1);
-                ball.position.set((e.clientX / innerWidth) * 2 - 1, -1 * ((e.clientY / innerHeight) * 2 - 1), 0);
-                ball.position.unproject(camera);
-                ballVelocity.set(
-                    ((e.clientX / innerWidth) * 2 - 1) * 8,
-                    (-e.clientY / innerHeight + 1) * 8 + 2,
-                    -10
-                );
-                ballVelocity.applyQuaternion(camera.quaternion);
-                ballMoving = true;
-            }
+
             window.addEventListener("click", throwBall);
 
             function payRespects() {
@@ -259,28 +246,87 @@
 
         function mainDogControl(){
 
-            
+
+            function rotatePart(part, axis, speed, startPoint, amplitude) {
+                part.rotation[axis] = -(Math.sin((frame / 100) * speed) * amplitude + startPoint);
+            }
+            function walkMovement() {
+                const speed = 40;
+                rotatePart(armLeft, "y", speed, -1.5, -0.5);
+                rotatePart(armRight, "y", speed, -1.5, 0.5);
+                rotatePart(legLeft, "y", speed, -1.5, 0.5);
+                rotatePart(legRight, "y", speed, -1.5, -0.5);
+                rotatePart(pawFrontRight, "y", speed, 0, 0.2);
+                rotatePart(pawFrontLeft, "y", speed, 0, -0.2);
+                rotatePart(pawBackRight, "y", speed, 0, -0.3);
+                rotatePart(pawBackLeft, "y", speed, 0, 0.3);
+            }
+            function headAndTailNaturalMovement(dimmer){
+                rotatePart(mouth, "y", 5, 0.3, 0.1 * dimmer);
+                rotatePart(head, "z", 2, 3, 0.5 * dimmer);
+                rotatePart(tail, "x", 20, 0, 0.5 * dimmer);
+            }
+            function idleStand(){
+                armLeft.rotation.y = 1.5;
+                armRight.rotation.y = 1.5;
+                legLeft.rotation.y = 1.5;
+                legRight.rotation.y = 1.5;
+                pawFrontRight.rotation.y = 0;
+                pawFrontLeft.rotation.y = 0;
+                pawBackRight.rotation.y = 0;
+                pawBackRight.rotation.y = 0;
+            }
+
+            /////////////////////////////////////////
+            //Here is the main part that controls the dog beheaviour
+
+            if (dogState === "idle") {
+                idleStand()
+            } else if (dogState !== "playingDead") {
+                walkMovement()
+            }
+
+            function throwBall(e) {
+                if (dogState !== "idle") return;
+                scene.add(ball);
+                ball.scale.setScalar(1);
+                ball.position.set((e.clientX / innerWidth) * 2 - 1, -1 * ((e.clientY / innerHeight) * 2 - 1), 0);
+                ball.position.unproject(camera);
+                ballVelocity.set(
+                    ((e.clientX / innerWidth) * 2 - 1) * 8,
+                    (-e.clientY / innerHeight + 1) * 8 + 2,
+                    -10
+                );
+                ballVelocity.applyQuaternion(camera.quaternion);
+                ballMoving = true;
+            }
+
+
+
             if (ballMoving) {
+                //throw the ball updating it position
                 ball.position.x += ballVelocity.x * delta;
                 ball.position.y += ballVelocity.y * delta;
                 ball.position.z += ballVelocity.z * delta;
                 ballVelocity.y += -9.8 * delta;
+
+                //if ball reach the floor (or nearly reach the floor)
                 if (ball.position.y <= 0.04) {
                     ballMoving = false;
                     ball.position.y = 0.04;
                     lerp = 0;
+                    //the ball have stoped moving so the dog get to fetch it
                     dogState = "fetching";
                 }
                 head.lookAt(ball.position);
             }
 
-            //if dog state is 'fetching' move head to look at the ball
+
             if (dogState === "fetching") {
                 head.lookAt(ball.position);
-
+                //move the dog where the ball is
                 lerp += 0.5 * delta;
                 if (lerp >= 1) lerp = 1;
-
                 dogPivot.quaternion.slerp(
                     tempQuaternion.setFromUnitVectors(zAxis, tempVector.copy(ball.position).sub(dogPivot.position)),
                     lerp
@@ -314,43 +360,6 @@
                 }
             }
 
-            function rotatePart(part, axis, speed, startPoint, amplitude) {
-                part.rotation[axis] = -(Math.sin((frame / 100) * speed) * amplitude + startPoint);
-            }
-            function walkMovement() {
-                const speed = 40;
-                rotatePart(armLeft, "y", speed, -1.5, -0.5);
-                rotatePart(armRight, "y", speed, -1.5, 0.5);
-                rotatePart(legLeft, "y", speed, -1.5, 0.5);
-                rotatePart(legRight, "y", speed, -1.5, -0.5);
-                rotatePart(pawFrontRight, "y", speed, 0, 0.2);
-                rotatePart(pawFrontLeft, "y", speed, 0, -0.2);
-                rotatePart(pawBackRight, "y", speed, 0, -0.3);
-                rotatePart(pawBackLeft, "y", speed, 0, 0.3);
-            }
-            function headAndTailNaturalMovement(dimmer){
-                rotatePart(mouth, "y", 5, 0.3, 0.1 * dimmer);
-                rotatePart(head, "z", 2, 3, 0.5 * dimmer);
-                rotatePart(tail, "x", 20, 0, 0.5 * dimmer);
-
-
-            }
-            function idleStand(){
-                armLeft.rotation.y = 1.5;
-                armRight.rotation.y = 1.5;
-                legLeft.rotation.y = 1.5;
-                legRight.rotation.y = 1.5;
-                pawFrontRight.rotation.y = 0;
-                pawFrontLeft.rotation.y = 0;
-                pawBackRight.rotation.y = 0;
-                pawBackRight.rotation.y = 0;
-            }
-
-            if (dogState === "idle") {
-                idleStand()
-            } else if (dogState !== "playingDead") {
-                walkMovement()
-            }
                 
             headAndTailNaturalMovement(dimmer)
             if (dogState !== "playingDead") {
@@ -368,7 +377,7 @@
             frame++;
             findInSceneAndName();
             delta = clock.getDelta();
-            
+
             mainDogControl()
 
             renderer.render(scene, camera);

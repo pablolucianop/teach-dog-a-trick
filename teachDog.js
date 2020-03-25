@@ -132,9 +132,8 @@
             stats = new Stats();
             container.appendChild(stats.dom);
             window.addEventListener("resize", onWindowResize, false);
+           
 
-
-            window.addEventListener("click", throwBall);
 
             function payRespects() {
                 if (dogState !== "idle") return;
@@ -277,7 +276,7 @@
                 pawBackRight.rotation.y = 0;
             }
 
-            /////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////
             //Here is the main part that controls the dog beheaviour
 
             if (dogState === "idle") {
@@ -301,6 +300,7 @@
                 ballMoving = true;
             }
 
+            window.addEventListener("click", throwBall);
 
 
             if (ballMoving) {

@@ -36,7 +36,7 @@
         //mobile or desktop?
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                 document.getElementById("instructions").innerHTML = 'tap anywhere on the screen to play fetch';
-                document.getElementById("instructions2").innerHTML = 'Press here to play dead';
+                document.getElementById("instructions2").innerHTML = 'tap here to play dead';
                 enableShadow=false
             }else{
                 document.getElementById("instructions").innerHTML = 'click and drag to play fetch';
@@ -162,6 +162,8 @@
                     }).start()
             }
 
+            document.getElementById("instructions2").addEventListener("click", function () {        payRespects()      });
+            document.getElementById("instructions2").addEventListener("touchstart", function () { payRespects() });
             function getUp() {
                 // if (dogState !== "idle") return;
 

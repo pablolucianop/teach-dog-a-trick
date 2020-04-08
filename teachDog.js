@@ -88,7 +88,7 @@ function bringTheDogToScene() {
     const loadingManager = new THREE.LoadingManager();
     const loader = new THREE.ColladaLoader(loadingManager);
     dogPivot = new THREE.Group();
-    loader.load("dog6.dae", function (collada) {
+    loader.load("src/3dModel/dog6.dae", function (collada) {
         const dogModel = collada.scene;
         dogModel.traverse((obj) => {
             if (obj.isMesh) {

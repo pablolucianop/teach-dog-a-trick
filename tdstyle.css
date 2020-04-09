@@ -1,5 +1,4 @@
 body {
-    background: #f2ebc2;
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -12,7 +11,8 @@ body {
     padding: 5px;
     font-family: Monospace;
     font-size: 13px;
-    text-align: center;
+    text-align: left;
+    z-index: 4;
 }
 
 #container {
@@ -64,24 +64,24 @@ h3 {
     width: 100%;
     text-align: center;
     font-size: 30px;
-    border-top: 2px black solid;
     height: 41px;
+    z-index: 4;
 }
 
 #github {
-    background-color: white;
+    background-color: #f2ebc2;
     padding: 5px 35px 5px 35px;
-    border-left: 2px black solid;
-    border-right: 2px black solid;
-    border-bottom: 2px black solid;
+    border: 2px black solid;
+    margin-bottom: 0;
 }
 
 nav {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.432);
+    background-color: #f2ebc2;
     position: absolute;
     top: 0px;
     border-bottom: 2px grey solid;
+    z-index: 0;
 }
 
 .class {
@@ -103,6 +103,20 @@ nav h1 {
     padding-bottom: 22px;
     float: left;
 }
-#container {
+#content-container {
     padding-top: 60px;
+    display: none;
+    position: relative;
+    top: -70px;
+
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.01);
+}
+#content {
+    position: absolute;
+
+    padding: 2px 4px 2px 4px;
+    background-color: #f2ebc2;
+    z-index: 2;
+    border: 2px grey solid;
 }

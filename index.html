@@ -14,7 +14,7 @@
         <script src="./js/three/libs/ColladaLoader.js"></script>
         <script src="./js/three/WebGL.js"></script>
         <script src="./js/three/libs/OrbitControls.js"></script>
-        <!--<script src="./js/three/libs/stats.min.js"></script>-->
+        <script src="./js/three/libs/stats.min.js"></script>
         <script src="./js/three/libs/tweenjs.js"></script>
     </head>
     <body>
@@ -25,18 +25,21 @@
             </div>
         </nav>
         <div class="clear"></div>
-        <div id="container">
-            <div id="loadingScreen">
-                Come here doggie!!
-                <h2>Loading...</h2>
+
+        <div id="content-container">
+            <div id="content">
+                <div id="loadingScreen">
+                    Come here doggie!!
+                    <h2>Loading...</h2>
+                </div>
+                <h3 id="instructions"></h3>
+                <h3 id="instructions2"></h3>
+                <h3 id="instructions3"></h3>
+                <h3 id="instructions4"></h3>
             </div>
-            <h3 id="instructions"></h3>
-            <h3 id="instructions2"></h3>
-            <h3 id="instructions3"></h3>
-            <h3 id="instructions4"></h3>
         </div>
 
-        <div class="footer">
+        <div class="footer" id="footer">
             <a href="https://github.com/pablolucianop/teach-dog-a-trick" id="github" target="_blank" rel="noopener">
                 GitHub
             </a>

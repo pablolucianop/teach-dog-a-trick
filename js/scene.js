@@ -27,7 +27,8 @@ let delta;
 init();
 
 function init() {
-    const container = document.getElementById("container");
+    const container = document.getElementById("content-container");
+    const footer = document.getElementById("footer");
     setTheScene();
     bringTheDogToScene();
 
@@ -42,7 +43,7 @@ function init() {
 
     //stats FPS
     //stats = new Stats();
-    //container.appendChild(stats.dom);
+    //footer.appendChild(stats.dom);
 
     window.addEventListener("resize", onWindowResize, false);
 
@@ -135,20 +136,7 @@ function onWindowResize() {
 
 function animate(time) {
     //loading screen managing
-    if (RESOURCES_LOADED == false) {
-        requestAnimationFrame(animate);
-        renderer.render(loadingScreen.scene, loadingScreen.camera);
-        document.getElementById("loadingScreen").style.display = "block";
-        document.getElementById("container").style.display = "none";
-    } else {
-        document.getElementById("loadingScreen").style.display = "none";
-        document.getElementById("container").style.display = "block";
-
-        requestAnimationFrame(animate);
-        TWEEN.update(time);
-        render();
-        stats.update();
-    }
+    menuLoad(time);
 }
 
 function render() {

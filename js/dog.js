@@ -145,8 +145,8 @@ function mainDogControl() {
         dogPivot.translateZ(6 * delta);
 
         //if it arrives to MYYY position, stay idle
-
-        if (dogPivot.position.distanceTo(camera.position) < 3) {
+        camxz = new THREE.Vector3(camera.position.x, 0, camera.position.z);
+        if (dogPivot.position.distanceTo(camxz) < 3) {
             dogState = "idle";
         }
     }

@@ -6,12 +6,20 @@ if (WEBGL.isWebGLAvailable() === false) {
 function setTheScene() {
     //setting the camera and scene
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.set(-2.46, 1.13, 1.47);
-    camera.lookAt(0, 0, 0);
-    new THREE.OrbitControls(camera);
+    camera.position.set(-6, 2, -2.2);
+    camera.lookAt(-2, 2, -2);
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xf2ebc2, 0.02);
+    controls = new THREE.OrbitControls(camera);
+    controls.minDistance = 0.001;
+    controls.maxDistance = 50.0;
+    controls.maxPolarAngle = Math.PI;
+    controls.minPolarAngle = 0;
+    controls.target = new THREE.Vector3(-2, 2, -2);
+    controls.update();
+
+    //scene.fog = new THREE.FogExp2(0xf2ebc2, 0.002);
+    //scene.background = new THREE.Color(0x87ceeb);
 
     //Lights
     //add ambient light
@@ -29,14 +37,46 @@ function setTheScene() {
     directionalLight.shadow.camera.right = 40;
     scene.add(directionalLight);
 
+    ///SKYBOX
+    let materialArray = [];
+    let texture_ft = new THREE.TextureLoader().load("./assets/img/posx.jpg");
+    let texture_bk = new THREE.TextureLoader().load("./assets/img/negx.jpg");
+    let texture_up = new THREE.TextureLoader().load("./assets/img/posy.jpg");
+    let texture_dn = new THREE.TextureLoader().load("./assets/img/negy.jpg");
+    let texture_rt = new THREE.TextureLoader().load("./assets/img/posz.jpg");
+    let texture_lf = new THREE.TextureLoader().load("./assets/img/negz.jpg");
+
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_up }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_dn }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_rt }));
+    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_lf }));
+
+    for (let i = 0; i < 6; i++) materialArray[i].side = THREE.BackSide;
+    let skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000);
+    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
+    skybox.translateY(1);
+    scene.add(skybox);
+
     //add floor
+
+    /*const color = 0xfffff;
+    const light = new THREE.DirectionalLight(color, 1);
+    const fcolor = 0x7cfc00;
+
     const floor = new THREE.Mesh(
-        new THREE.CircleBufferGeometry(100, 32),
-        new THREE.MeshStandardMaterial({ color: 0xf2ebc2, roughness: 1, metalness: 0 })
+        new THREE.CircleBufferGeometry(15, 32),
+        //new THREE.MeshStandardMaterial({ color: 0xf2ebc2, roughness: 4, metalness: 0 })
+        new THREE.MeshPhongMaterial({
+            fcolor,
+            opacity: 0.5,
+            transparent: true,
+        })
     );
     floor.receiveShadow = enableShadow;
     floor.rotation.x = -Math.PI / 2;
-    scene.add(floor);
+    scene.add(floor);*/
 }
 
 function bringTheDogToScene() {

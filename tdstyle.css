@@ -55,3 +55,54 @@ h3 {
     line-height: 1;
     text-align: center;
 }
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding-top: 5px;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    border-top: 2px black solid;
+    height: 41px;
+}
+
+#github {
+    background-color: white;
+    padding: 5px 35px 5px 35px;
+    border-left: 2px black solid;
+    border-right: 2px black solid;
+    border-bottom: 2px black solid;
+}
+
+nav {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.432);
+    position: absolute;
+    top: 0px;
+    border-bottom: 2px grey solid;
+}
+
+.class {
+    clear: both;
+}
+
+nav h1 {
+    float: left;
+    margin-left: 10px;
+}
+
+#menu-btn {
+    font-size: 22px;
+    padding: 20px 20px 0px 20px;
+    margin-left: 30px;
+    margin-top: 0px;
+    border-left: 2px grey solid;
+    border-right: 2px grey solid;
+    padding-bottom: 22px;
+    float: left;
+}
+#container {
+    padding-top: 60px;
+}

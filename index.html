@@ -2,31 +2,49 @@
 <html lang="en">
     <head>
         <title>Teach this dog a trick!</title>
+        <link rel="shortcut icon" type="img/ico" href="favicon.ico" />
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
         <link rel="stylesheet" type="text/css" href="tdstyle.css" />
-        <script src="three/build/three.js"></script>
-        <script src="three/js/loaders/ColladaLoader.js"></script>
-        <script src="three/js/WebGL.js"></script>
-        <script src="three/js/controls/OrbitControls.js"></script>
-        <script src="three/js/libs/stats.min.js"></script>
-        <script src="three/js/vendor/tweenjs/tweenjs.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="./js/three/three.js"></script>
+        <script src="./js/three/libs/ColladaLoader.js"></script>
+        <script src="./js/three/WebGL.js"></script>
+        <script src="./js/three/libs/OrbitControls.js"></script>
+        <!--<script src="./js/three/libs/stats.min.js"></script>-->
+        <script src="./js/three/libs/tweenjs.js"></script>
     </head>
     <body>
-        <div id="loadingScreen">
-            Come here doggie!!
-            <h2>Loading...</h2>
-        </div>
-        <div id="container">
+        <nav>
             <h1>Teach this dog a trick!</h1>
-            <a href="https://github.com/pablolucianop/teach-dog-a-trick" target="_blank" rel="noopener">
-                <h2>github link</h2>
-            </a>
+            <div id="menu-btn">
+                <span>Menu</span>
+            </div>
+        </nav>
+        <div class="clear"></div>
+        <div id="container">
+            <div id="loadingScreen">
+                Come here doggie!!
+                <h2>Loading...</h2>
+            </div>
             <h3 id="instructions"></h3>
             <h3 id="instructions2"></h3>
             <h3 id="instructions3"></h3>
             <h3 id="instructions4"></h3>
         </div>
-        <script src="teachDog.js"></script>
+
+        <div class="footer">
+            <a href="https://github.com/pablolucianop/teach-dog-a-trick" id="github" target="_blank" rel="noopener">
+                GitHub
+            </a>
+        </div>
+
+        <script src="./js/init.js"></script>
+        <script src="./js/menu.js"></script>
+        <script src="./js/dog.js"></script>
+        <script src="./js/scene.js"></script>
     </body>
 </html>

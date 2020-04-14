@@ -25,6 +25,6 @@ function menuLoad(time) {
         requestAnimationFrame(animate);
         TWEEN.update(time);
         render();
-        stats.update();
+        // stats.update();
     }
 }

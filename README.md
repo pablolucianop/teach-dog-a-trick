@@ -1,6 +1,7 @@
 ﻿# teach-dog-a-trick
  
  ## https://pablolucianop.github.io/teach-dog-a-trick/index.html
+  ![Dog presentation](/assests/img/presentation.png)
   
 Anyone interested in adding something to a small project? I'm looking to gain some experience in collaborative work and git in general. 
 This is my proposition: Teach this dog a trick! 

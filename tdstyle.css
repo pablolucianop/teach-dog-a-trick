@@ -57,6 +57,7 @@ h3 {
 }
 
 .footer {
+    color: rgb(0, 183, 255);
     position: fixed;
     left: 0;
     bottom: 0;

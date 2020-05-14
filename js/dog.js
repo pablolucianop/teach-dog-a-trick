@@ -64,7 +64,7 @@ function mainDogControl() {
     }
 
     function throwBall(e) {
-        if (dogState !== "idle") return;
+        if (dogState !== "idle" || menuStatus !== "fetch") return;
         scene.add(ball);
         ball.scale.setScalar(1);
         ball.position.set((e.clientX / innerWidth) * 2 - 1, -1 * ((e.clientY / innerHeight) * 2 - 1), 0);

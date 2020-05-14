@@ -1,3 +1,5 @@
+let skybox;
+
 //web gl test
 if (WEBGL.isWebGLAvailable() === false) {
     document.body.appendChild(WEBGL.getWebGLErrorMessage());
@@ -39,26 +41,30 @@ function setTheScene() {
     scene.add(directionalLight);
 
     ///SKYBOX
-    let materialArray = [];
-    let texture_ft = new THREE.TextureLoader().load("./assets/img/posx.jpg");
-    let texture_bk = new THREE.TextureLoader().load("./assets/img/negx.jpg");
-    let texture_up = new THREE.TextureLoader().load("./assets/img/posy.jpg");
-    let texture_dn = new THREE.TextureLoader().load("./assets/img/negy.jpg");
-    let texture_rt = new THREE.TextureLoader().load("./assets/img/posz.jpg");
-    let texture_lf = new THREE.TextureLoader().load("./assets/img/negz.jpg");
+    function skybox(params) {
+        let materialArray = [];
+        let texture_ft = new THREE.TextureLoader().load("./assets/img/posx.jpg");
+        let texture_bk = new THREE.TextureLoader().load("./assets/img/negx.jpg");
+        let texture_up = new THREE.TextureLoader().load("./assets/img/posy.jpg");
+        let texture_dn = new THREE.TextureLoader().load("./assets/img/negy.jpg");
+        let texture_rt = new THREE.TextureLoader().load("./assets/img/posz.jpg");
+        let texture_lf = new THREE.TextureLoader().load("./assets/img/negz.jpg");
 
-    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
-    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
-    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_up }));
-    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_dn }));
-    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_rt }));
-    materialArray.push(new THREE.MeshBasicMaterial({ map: texture_lf }));
+        materialArray.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
+        materialArray.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
+        materialArray.push(new THREE.MeshBasicMaterial({ map: texture_up }));
+        materialArray.push(new THREE.MeshBasicMaterial({ map: texture_dn }));
+        materialArray.push(new THREE.MeshBasicMaterial({ map: texture_rt }));
+        materialArray.push(new THREE.MeshBasicMaterial({ map: texture_lf }));
 
-    for (let i = 0; i < 6; i++) materialArray[i].side = THREE.BackSide;
-    let skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000);
-    let skybox = new THREE.Mesh(skyboxGeo, materialArray);
-    skybox.translateY(1);
-    scene.add(skybox);
+        for (let i = 0; i < 6; i++) materialArray[i].side = THREE.BackSide;
+        let skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000);
+        let skybox = new THREE.Mesh(skyboxGeo, materialArray);
+        skybox.translateY(1);
+        scene.add(skybox);
+    }
+
+    skybox();
 
     //add floor
 
@@ -111,3 +117,15 @@ function bringTheDogToScene() {
     ballMoving = false;
     ballVelocity = new THREE.Vector3();
 }
+
+document.getElementById("japanButton").addEventListener("click", function() {
+    document.getElementById("footer").innerHTML = "";
+    menuStatus = "japan";
+    scene.add(skybox);
+});
+
+document.getElementById("japanButton").addEventListener("click", function() {
+    document.getElementById("footer").innerHTML = "";
+    menuStatus = "japan";
+    skybox();
+});

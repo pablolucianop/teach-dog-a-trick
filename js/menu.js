@@ -32,7 +32,10 @@ function menuLoad(time) {
 let menuStatus;
 document.getElementById("fetchButton").addEventListener("click", function() {
     document.getElementById("footer").innerHTML = "Click anywhere in the screen to throw the ball";
-    menuStatus = "fetch";
+
+    setTimeout(function() {
+        menuStatus = "fetch";
+    }, 100);
 });
 
 document.getElementById("deadButton").addEventListener("click", function() {
@@ -50,7 +53,8 @@ document.getElementById("comeButton").addEventListener("click", function() {
     menuStatus = "come";
 });
 
-document.getElementById("japanButton").addEventListener("click", function() {
-    document.getElementById("footer").innerHTML = "";
-    menuStatus = "japan";
-});
+// document.getElementById("japanButton").addEventListener("click", function() {
+//     document.getElementById("footer").innerHTML = "";
+//     menuStatus = "japan";
+//     skybox();
+// });

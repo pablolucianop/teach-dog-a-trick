@@ -56,13 +56,13 @@ function init() {
         if (dogState !== "idle") return;
         dogState = "playingDead";
 
-        var dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
-        var halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
+        let dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
+        let halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
 
-        var fromPosition = { angle: dogPivot.rotation.z, posY: 0 };
-        var toPosition = { angle: dogPivot.rotation.z - Math.PI * 0.48, posY: halfDogWidth - 0.09 }; // .09 to account for a bit of head movement
+        let fromPosition = { angle: dogPivot.rotation.z, posY: 0 };
+        let toPosition = { angle: dogPivot.rotation.z - Math.PI * 0.48, posY: halfDogWidth - 0.09 }; // .09 to account for a bit of head movement
 
-        var fallTween = new TWEEN.Tween(fromPosition)
+        let fallTween = new TWEEN.Tween(fromPosition)
             .to(toPosition, 2000)
             .easing(TWEEN.Easing.Bounce.Out)
             .onUpdate(function() {
@@ -97,13 +97,13 @@ function init() {
     function getUp() {
         // if (dogState !== "idle") return;
 
-        var dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
-        var halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
+        let dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
+        let halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
 
-        var fromPosition = { angle: dogPivot.rotation.z, posY: dogPivot.position.y };
-        var toPosition = { angle: dogPivot.rotation.z - Math.PI * 1.52, posY: 0 }; // .09 to account for a bit of head movement
+        let fromPosition = { angle: dogPivot.rotation.z, posY: dogPivot.position.y };
+        let toPosition = { angle: dogPivot.rotation.z - Math.PI * 1.52, posY: 0 }; // .09 to account for a bit of head movement
 
-        var fallTween = new TWEEN.Tween(fromPosition)
+        let fallTween = new TWEEN.Tween(fromPosition)
             .to(toPosition, 2000)
             .easing(TWEEN.Easing.Quadratic.In)
             .onUpdate(function() {

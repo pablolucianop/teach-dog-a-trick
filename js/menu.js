@@ -36,7 +36,7 @@ document.getElementById("fetchButton").addEventListener("click", function() {
 });
 
 document.getElementById("deadButton").addEventListener("click", function() {
-    document.getElementById("footer").innerHTML = "Click anywhere in the screen to throw the ball";
+    document.getElementById("footer").innerHTML = "";
     menuStatus = "dead";
 });
 

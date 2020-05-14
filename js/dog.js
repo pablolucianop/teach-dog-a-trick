@@ -54,6 +54,41 @@ function mainDogControl() {
         pawBackRight.rotation.y = 0;
     }
 
+    function ven() {
+        if (dogState !== "idle") return;
+        dogState = "coming";
+    }
+
+    function payRespects() {
+        if (dogState !== "idle") return;
+        dogState = "playingDead";
+
+        var dogBoundingBox = new THREE.Box3().setFromObject(dogPivot);
+        var halfDogWidth = (Math.abs(dogBoundingBox.min.x) + Math.abs(dogBoundingBox.max.x)) / 2;
+
+        var fromPosition = { angle: dogPivot.rotation.z, posY: 0 };
+        var toPosition = { angle: dogPivot.rotation.z - Math.PI * 0.48, posY: halfDogWidth - 0.09 }; // .09 to account for a bit of head movement
+
+        var fallTween = new TWEEN.Tween(fromPosition)
+            .to(toPosition, 2000)
+            .easing(TWEEN.Easing.Bounce.Out)
+            .onUpdate(function() {
+                dogPivot.rotation.z = fromPosition.angle;
+                dogPivot.position.y = fromPosition.posY;
+            })
+            .onComplete(function() {
+                setTimeout(function() {
+                    // dogPivot.rotation.z = 0;
+                    // dogPivot.position.y = 0;
+                    getUp();
+                }, 1000);
+                setTimeout(function() {
+                    // dogState = "idle";
+                }, 2000);
+            })
+            .start();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
     //Here is the main part that controls the dog beheaviour
 

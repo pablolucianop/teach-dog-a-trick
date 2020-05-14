@@ -3,7 +3,7 @@ let camera, scene, renderer, stats;
 const clock = new THREE.Clock();
 const loadingScreen = {
     scene: new THREE.Scene(),
-    camera: new THREE.PerspectiveCamera(),
+    camera: new THREE.PerspectiveCamera()
 };
 
 //fetch related vars
@@ -65,28 +65,31 @@ function init() {
         var fallTween = new TWEEN.Tween(fromPosition)
             .to(toPosition, 2000)
             .easing(TWEEN.Easing.Bounce.Out)
-            .onUpdate(function () {
+            .onUpdate(function() {
                 dogPivot.rotation.z = fromPosition.angle;
                 dogPivot.position.y = fromPosition.posY;
             })
-            .onComplete(function () {
-                setTimeout(function () {
+            .onComplete(function() {
+                setTimeout(function() {
                     // dogPivot.rotation.z = 0;
                     // dogPivot.position.y = 0;
                     getUp();
                 }, 1000);
-                setTimeout(function () {
+                setTimeout(function() {
                     // dogState = "idle";
                 }, 2000);
             })
             .start();
     }
 
-    document.getElementById("instructions2").addEventListener("click", function () {
+    document.getElementById("deadButton").addEventListener("click", function() {
         payRespects();
     });
-    document.getElementById("instructions2").addEventListener("touchstart", function () {
+    document.getElementById("deadButton").addEventListener("touchstart", function() {
         payRespects();
+    });
+    document.getElementById("comeButton").addEventListener("touchstart", function() {
+        ven();
     });
     function getUp() {
         // if (dogState !== "idle") return;
@@ -100,16 +103,16 @@ function init() {
         var fallTween = new TWEEN.Tween(fromPosition)
             .to(toPosition, 2000)
             .easing(TWEEN.Easing.Quadratic.In)
-            .onUpdate(function () {
+            .onUpdate(function() {
                 dogPivot.rotation.z = fromPosition.angle;
                 dogPivot.position.y = fromPosition.posY;
             })
-            .onComplete(function () {
-                setTimeout(function () {
+            .onComplete(function() {
+                setTimeout(function() {
                     dogPivot.rotation.z = 0;
                     dogPivot.position.y = 0;
                 }, 1000);
-                setTimeout(function () {
+                setTimeout(function() {
                     dogState = "idle";
                 }, 2000);
             })
@@ -117,7 +120,7 @@ function init() {
     }
 
     //press f to pay respects
-    window.addEventListener("keypress", function (e) {
+    window.addEventListener("keypress", function(e) {
         if (e.key === "f") {
             payRespects();
         }

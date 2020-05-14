@@ -8,7 +8,7 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     document.getElementById("instructions").innerHTML = "click and drag to play fetch";
     document.getElementById("instructions2").innerHTML = "Press f to play dead";
     document.getElementById("instructions3").innerHTML = "Press c to come";
-    document.getElementById("instructions4").innerHTML = "arrow keys to move";
+    document.getElementById("list").innerHTML += "hola 2";
     enableShadow = true;
 }
 

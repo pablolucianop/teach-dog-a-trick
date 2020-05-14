@@ -17,6 +17,7 @@ function setTheScene() {
     controls.minPolarAngle = 0;
     controls.target = new THREE.Vector3(-2, 2, -2);
     controls.update();
+    controls.noZoom = true;
 
     //scene.fog = new THREE.FogExp2(0xf2ebc2, 0.002);
     //scene.background = new THREE.Color(0x87ceeb);
@@ -84,9 +85,9 @@ function bringTheDogToScene() {
     const loadingManager = new THREE.LoadingManager();
     const loader = new THREE.ColladaLoader(loadingManager);
     dogPivot = new THREE.Group();
-    loader.load("./assets/models/dog6.dae", function (collada) {
+    loader.load("./assets/models/dog6.dae", function(collada) {
         const dogModel = collada.scene;
-        dogModel.traverse((obj) => {
+        dogModel.traverse(obj => {
             if (obj.isMesh) {
                 obj.castShadow = enableShadow;
                 obj.receiveShadow = enableShadow;
@@ -95,7 +96,7 @@ function bringTheDogToScene() {
         dogModel.rotation.y = Math.PI / 2;
         dogPivot.add(dogModel);
         scene.add(dogPivot);
-        loadingManager.onLoad = function () {
+        loadingManager.onLoad = function() {
             animate();
             RESOURCES_LOADED = true;
         };

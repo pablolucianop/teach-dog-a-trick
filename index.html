@@ -7,7 +7,6 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
         <link rel="stylesheet" href="node_modules\bootstrap\dist\css\bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="tdstyle.css" />
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="./js/three/three.js"></script>
         <script src="./js/three/libs/ColladaLoader.js"></script>
@@ -34,28 +33,17 @@
                     Come here doggie!!
                     <h2>Loading...</h2>
                 </div>
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            Some quick example te
-                        </p>
-
-                        <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
-                            <button type="button" class="btn btn-secondary">Fetch!</button>
-                            <button type="button" class="btn btn-secondary">Play dead!</button>
-                            <button type="button" class="btn btn-secondary">move arround</button>
-                            <button type="button" class="btn btn-secondary">Came!</button>
-                            <button type="button" class="btn btn-secondary">Japan park</button>
-                        </div>
-                    </div>
+                <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" id="fetchButton" class="btn btn-secondary">Fetch!</button>
+                    <button type="button" id="instructions2" class="btn btn-secondary">Play dead!</button>
+                    <button type="button" class="btn btn-secondary">move arround</button>
+                    <button type="button" class="btn btn-secondary">Come here!</button>
+                    <button type="button" class="btn btn-secondary">Japan park</button>
                 </div>
             </div>
         </div>
 
-        <div class="footer" id="footer">
-            Click anywhere on the screen to throw the ball
-        </div>
+        <div class="footer" id="footer"></div>
 
         <script src="./js/init.js"></script>
         <script src="./js/menu.js"></script>

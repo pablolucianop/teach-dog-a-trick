@@ -5,10 +5,10 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     document.getElementById("instructions2").innerHTML = "tap here to play dead";
     enableShadow = false;
 } else {
-    document.getElementById("instructions").innerHTML = "click and drag to play fetch";
-    document.getElementById("instructions2").innerHTML = "Press f to play dead";
-    document.getElementById("instructions3").innerHTML = "Press c to come";
-    document.getElementById("list").innerHTML += "hola 2";
+    // document.getElementById("instructions").innerHTML = "click and drag to play fetch";
+    // document.getElementById("instructions2").innerHTML = "Press f to play dead";
+    // document.getElementById("instructions3").innerHTML = "Press c to come";
+    // document.getElementById("list").innerHTML += "hola 2";
     enableShadow = true;
 }
 
@@ -28,3 +28,7 @@ function menuLoad(time) {
         // stats.update();
     }
 }
+
+document.getElementById("fetchButton").addEventListener("click", function() {
+    document.getElementById("footer").innerHTML = "Click anywhere in the screen to throw the ball";
+});

@@ -117,7 +117,5 @@ nav h1 {
     position: absolute;
 
     padding: 2px 4px 2px 4px;
-    background-color: #f2ebc2;
     z-index: 2;
-    border: 2px grey solid;
 }

@@ -33,19 +33,39 @@
                     Come here doggie!!
                     <h2>Loading...</h2>
                 </div>
-                <div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group-vertical" id= "buttone" role="group" aria-label="Button group with nested dropdown">
                     <button type="button" id="fetchButton" class="btn btn-secondary">Fetch!</button>
                     <button type="button" id="deadButton" class="btn btn-secondary">
                         Play dead!
                     </button>
-                    <button type="button" id="moveButton" class="btn btn-secondary">move arround</button>
+                    <button type="button" id="moveButton" class="btn btn-secondary active">move arround</button>
                     <button type="button" id="comeButton" class="btn btn-secondary">Come here!</button>
                     <button type="button" id="japanButton" class="btn btn-secondary">Japan park</button>
                 </div>
             </div>
         </div>
+<script>
+const header = document.getElementById("buttone");
+console.log(header)
+const btns = header.getElementsByClassName("btn btn-secondary");
 
-        <div class="footer" id="footer"></div>
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].classList = ["btn btn-secondary"]
+  this.className += " active";
+  });
+}
+</script>
+        <div class="footer" id="footer">
+            <div  class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group mr-2" role="group" aria-label="First group">
+    <button type="button" class="btn btn-secondary">left</button>
+    <button type="button" class="btn btn-secondary">up</button>
+    <button type="button" class="btn btn-secondary">down</button>
+    <button type="button" class="btn btn-secondary">right</button>
+  </div>
+        </div>
 
         <script src="./js/init.js"></script>
         <script src="./js/menu.js"></script>

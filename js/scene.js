@@ -88,9 +88,9 @@ function init() {
     document.getElementById("deadButton").addEventListener("touchstart", function() {
         payRespects();
     });
-    document.getElementById("comeButton").addEventListener("click", function() {
-        ven();
-    });
+    // document.getElementById("comeButton").addEventListener("click", function() {
+    //     ven();
+    // });
     document.getElementById("comeButton").addEventListener("touchstart", function() {
         ven();
     });

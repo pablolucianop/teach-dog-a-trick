@@ -43,15 +43,15 @@ document.getElementById("deadButton").addEventListener("click", function() {
     menuStatus = "dead";
 });
 
-document.getElementById("moveButton").addEventListener("click", function() {
-    document.getElementById("footer").innerHTML = "<>";
-    menuStatus = "move";
-});
+// document.getElementById("moveButton").addEventListener("click", function() {
+//     document.getElementById("footer").innerHTML = "<>";
+//     menuStatus = "move";
+// });
 
-document.getElementById("comeButton").addEventListener("click", function() {
-    document.getElementById("footer").innerHTML = "";
-    menuStatus = "come";
-});
+// document.getElementById("comeButton").addEventListener("click", function() {
+//     document.getElementById("footer").innerHTML = "";
+//     menuStatus = "come";
+// });
 
 document.getElementById("japanButton").addEventListener("click", function() {
     document.getElementById("footer").innerHTML = "";

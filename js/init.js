@@ -6,8 +6,8 @@ if (WEBGL.isWebGLAvailable() === false) {
 function setTheScene() {
     //setting the camera and scene
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.set(-6, 2, -2.2);
-    camera.lookAt(-2, 2, -2);
+    camera.position.set(-2, 0, 4);
+    camera.lookAt(10, 0, -0);
 
     scene = new THREE.Scene();
     controls = new THREE.OrbitControls(camera);
@@ -15,7 +15,7 @@ function setTheScene() {
     controls.maxDistance = 50.0;
     controls.maxPolarAngle = Math.PI;
     controls.minPolarAngle = 0;
-    controls.target = new THREE.Vector3(-2, 2, -2);
+    controls.target = new THREE.Vector3(-0, 0, -0);
     controls.update();
     controls.noZoom = true;
 

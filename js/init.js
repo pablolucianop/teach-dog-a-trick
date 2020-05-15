@@ -107,6 +107,17 @@ function bringTheDogToScene() {
         };
     });
 
+    //bring grass
+
+    loader.load("./assets/models/grass.dae", function(collada) {
+        const grass = collada.scene;
+        scene.add(grass);
+        loadingManager.onLoad = function() {
+            animate();
+            RESOURCES_LOADED = true;
+        };
+    });
+
     //and his ball!
     ball = new THREE.Mesh(
         new THREE.SphereBufferGeometry(0.05),

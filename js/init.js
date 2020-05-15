@@ -1,5 +1,3 @@
-let skybox;
-
 //web gl test
 if (WEBGL.isWebGLAvailable() === false) {
     document.body.appendChild(WEBGL.getWebGLErrorMessage());
@@ -61,11 +59,12 @@ function setTheScene() {
         let skyboxGeo = new THREE.BoxGeometry(1000, 1000, 1000);
         let skybox = new THREE.Mesh(skyboxGeo, materialArray);
         skybox.translateY(1);
+        skybox.name = "skyboxa";
+        skybox.visible = false;
         scene.add(skybox);
+        // scene.skyboxa.visible = false;
     }
-
     skybox();
-
     //add floor
 
     /*const color = 0xfffff;
@@ -117,15 +116,3 @@ function bringTheDogToScene() {
     ballMoving = false;
     ballVelocity = new THREE.Vector3();
 }
-
-document.getElementById("japanButton").addEventListener("click", function() {
-    document.getElementById("footer").innerHTML = "";
-    menuStatus = "japan";
-    scene.add(skybox);
-});
-
-document.getElementById("japanButton").addEventListener("click", function() {
-    document.getElementById("footer").innerHTML = "";
-    menuStatus = "japan";
-    skybox();
-});

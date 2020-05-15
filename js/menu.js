@@ -29,7 +29,7 @@ function menuLoad(time) {
     }
 }
 
-let menuStatus;
+let menuStatus, skybox;
 document.getElementById("fetchButton").addEventListener("click", function() {
     document.getElementById("footer").innerHTML = "Click anywhere in the screen to throw the ball";
 
@@ -53,8 +53,14 @@ document.getElementById("comeButton").addEventListener("click", function() {
     menuStatus = "come";
 });
 
-// document.getElementById("japanButton").addEventListener("click", function() {
-//     document.getElementById("footer").innerHTML = "";
-//     menuStatus = "japan";
-//     skybox();
-// });
+document.getElementById("japanButton").addEventListener("click", function() {
+    document.getElementById("footer").innerHTML = "";
+    menuStatus = "japan";
+    var object1 = scene.getObjectByName("skyboxa");
+
+    if (object1.visible === false) {
+        object1.visible = true;
+    } else {
+        object1.visible = false;
+    }
+});

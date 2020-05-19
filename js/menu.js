@@ -1,16 +1,18 @@
-//mobile or desktop?
+let menuStatus, skybox;
 
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    document.getElementById("instructions").innerHTML = "tap anywhere on the screen to play fetch";
-    document.getElementById("instructions2").innerHTML = "tap here to play dead";
-    enableShadow = false;
-} else {
-    // document.getElementById("instructions").innerHTML = "click and drag to play fetch";
-    // document.getElementById("instructions2").innerHTML = "Press f to play dead";
-    // document.getElementById("instructions3").innerHTML = "Press c to come";
-    // document.getElementById("list").innerHTML += "hola 2";
-    enableShadow = true;
-}
+//mobile or desktop?
+enableShadow = false;
+// if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+//     document.getElementById("instructions").innerHTML = "tap anywhere on the screen to play fetch";
+//     document.getElementById("instructions2").innerHTML = "tap here to play dead";
+//     enableShadow = false;
+// } else {
+//     // document.getElementById("instructions").innerHTML = "click and drag to play fetch";
+//     // document.getElementById("instructions2").innerHTML = "Press f to play dead";
+//     // document.getElementById("instructions3").innerHTML = "Press c to come";
+//     // document.getElementById("list").innerHTML += "hola 2";
+//     enableShadow = true;
+// }
 
 function menuLoad(time) {
     if (RESOURCES_LOADED == false) {
@@ -29,7 +31,6 @@ function menuLoad(time) {
     }
 }
 
-let menuStatus, skybox;
 document.getElementById("fetchButton").addEventListener("click", function() {
     document.getElementById("footer").innerHTML = "Click anywhere in the screen to throw the ball";
 

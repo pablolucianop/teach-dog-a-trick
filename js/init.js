@@ -19,7 +19,7 @@ function setTheScene() {
     controls.maxPolarAngle = Math.PI * 0.45;
     controls.target = new THREE.Vector3(-0, 0, -0);
     controls.update();
-    controls.noZoom = true;
+    // controls.noZoom = true;
 
     //scene.fog = new THREE.FogExp2(0xf2ebc2, 0.002);
     //scene.background = new THREE.Color(0x87ceeb);

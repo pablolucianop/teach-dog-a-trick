@@ -49,10 +49,10 @@ document.getElementById("deadButton").addEventListener("click", function() {
 //     menuStatus = "move";
 // });
 
-// document.getElementById("comeButton").addEventListener("click", function() {
-//     document.getElementById("footer").innerHTML = "";
-//     menuStatus = "come";
-// });
+document.getElementById("comeButton").addEventListener("click", function() {
+    document.getElementById("footer").innerHTML = "";
+    menuStatus = "come";
+});
 
 document.getElementById("japanButton").addEventListener("click", function() {
     document.getElementById("footer").innerHTML = "";

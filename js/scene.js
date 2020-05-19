@@ -141,7 +141,6 @@ function onWindowResize() {
 }
 
 function animate(time) {
-    //loading screen managing
     menuLoad(time);
 }
 

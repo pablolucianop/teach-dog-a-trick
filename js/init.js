@@ -10,11 +10,13 @@ function setTheScene() {
     camera.lookAt(10, 0, -0);
 
     scene = new THREE.Scene();
+
     controls = new THREE.OrbitControls(camera);
+    // controls.minPolarAngle = 0;
     controls.minDistance = 0.001;
     controls.maxDistance = 50.0;
-    controls.maxPolarAngle = Math.PI;
-    controls.minPolarAngle = 0;
+    // controls.maxPolarAngle = Math.PI;
+    controls.maxPolarAngle = Math.PI * 0.45;
     controls.target = new THREE.Vector3(-0, 0, -0);
     controls.update();
     controls.noZoom = true;

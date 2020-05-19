@@ -109,7 +109,7 @@ function bringTheDogToScene() {
 
     //bring grass
 
-    loader.load("./assets/models/grass.dae", function(collada) {
+    loader.load("./assets/models/grassScene.dae", function(collada) {
         const grass = collada.scene;
         scene.add(grass);
         loadingManager.onLoad = function() {
